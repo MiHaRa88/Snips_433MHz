@@ -30,8 +30,12 @@ def subscribe_intent_callback(hermes, intentMessage):
 
 
 def action_wrapper(hermes, intentMessage, conf):
-    {{#each action_code as |a|}}{{a}}
-    {{/each}}
+#    {{#each action_code as |a|}}{{a}}
+#    {{/each}}
+    if intentMessage.intent.intent_name == "MiHaRa:socketOff":
+        result_sentence = 	"Licht aus"
+    else:
+        result_sentence = 	"Nicht verstanden"
 
 
 if __name__ == "__main__":
