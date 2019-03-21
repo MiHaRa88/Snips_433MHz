@@ -34,6 +34,7 @@ def action_wrapper(hermes, intentMessage, conf):
 #    {{/each}}
     if intentMessage.intent.intent_name == "MiHaRa:socketOff":
         result_sentence = 	"Licht aus"
+        subprocess.call(["/home/pi/lights_commands/chacon_send", "2", "12325261", "1", "on"])
     else:
         result_sentence = 	"Nicht verstanden"
 
