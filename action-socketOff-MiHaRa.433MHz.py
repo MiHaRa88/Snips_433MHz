@@ -6,14 +6,17 @@ from hermes_python.hermes import Hermes
 from hermes_python.ffi.utils import MqttOptions
 from hermes_python.ontology import *
 import io
+import subprocess
 
 CONFIGURATION_ENCODING_FORMAT = "utf-8"
 CONFIG_INI = "config.ini"
 
+#dir="/home/pi/base/433MHz/raspberry-remote/send"
+dir="/var/lib/snips/skills/Snips_433MHz/raspberry-remote/send"
+
 class SnipsConfigParser(configparser.SafeConfigParser):
     def to_dict(self):
         return {section : {option_name : option for option_name, option in self.items(section)} for section in self.sections()}
-
 
 def read_configuration_file(configuration_file):
     try:
@@ -30,11 +33,10 @@ def subscribe_intent_callback(hermes, intentMessage):
 
 
 def action_wrapper(hermes, intentMessage, conf):
-#    {{#each action_code as |a|}}{{a}}
-#    {{/each}}
     if intentMessage.intent.intent_name == "MiHaRa:socketOff":
-        result_sentence = 	"Licht aus"
-        subprocess.call(["/home/pi/lights_commands/chacon_send", "2", "12325261", "1", "on"])
+        Steckdose = intentMessage.slots.socketName.first().value # We extract the value from the slot "socketName"
+        result_sentence = 	"Ok, Steckdose {} ist aus".format(str(Steckdose))
+        subprocess.call([dir, "01111", "5", "0"])
     else:
         result_sentence = 	"Nicht verstanden"
 
